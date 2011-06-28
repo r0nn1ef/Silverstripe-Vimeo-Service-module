@@ -1,0 +1,92 @@
+@CHARSET "UTF-8";
+#vimeo-powered-by {
+	display:block;
+	float:right;
+	clear:right;
+	width:114px;
+	height:18px;
+	padding:0;
+	background:transparent url(../images/vimeo-powered-by.png) top left no-repeat;
+	text-decoration:none !important;
+}
+.typeography ul.vimeo-video-list {
+
+}
+.typeography ul.vimeo-video-list li.vimeo-video-container {
+
+}
+
+.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb {
+	float:left;
+	width:100px;
+	padding:5px;
+	text-align:center;
+}
+
+.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb a {
+	text-decoration:none;
+}
+
+.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb img {
+	border:none;
+}
+
+.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details {
+	float:left;
+	padding:5px;
+	width:500px;
+}
+
+.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details h3 span.vimeo-duration {
+	font-size:0.7em;
+}
+
+.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details p {
+	margin:5px auto;
+}
+
+.typeography .pageNumbers {
+	float:left;
+	clear:left;
+	margin:0 25%;
+}
+
+.typeography .pageNumbers a, .typeography .pageNumbers strong {
+	float:left;
+	display:block;
+	width:auto;
+	padding:1px 3px;
+	background-color:#3e91c4;
+	border:1px solid #3e91c4;
+	color:#ffffff;
+	margin:3px;
+}
+
+.typeography .pageNumbers a:link, .typeography .pageNumbers a:visited, .typeography .pageNumbers a:hover {
+	text-decoration:none;
+}
+
+.typeography .pageNumbers a:hover, .typeography .pageNumbers strong {
+	border-color:#3e91c4;
+	background-color:#ffffff;
+	color:#3e91c4;
+}
+
+/* Detail page stuff. */
+.vimeogallery .video-wrapper {
+	margin:24px auto 10px auto;
+}
+
+.vimeogallery .video-stats ul li {
+	display:inline;
+	margin-right: 8px;
+}
+
+.vimeogallery .video-stats .vimeo-stat, .vimeogallery .video-owner a {
+	font-weight:bold;
+}
+
+
+.vimeogallery .video-stats, .vimeogallery .video-owner, .vimeogallery .video-description {
+	margin-top:8px;
+}
