@@ -1,0 +1,55 @@
+###############################################
+Vimeo Service Module
+###############################################
+
+18 June 2011
+
+Maintainer Contact
+-----------------------------------------------
+Ronald Ferguson (Nickname: r0nn1ef)
+<r0nn1ef8580 (at) gmail (dot) com>
+
+Requirements
+-----------------------------------------------
+SilverStripe 2.4.5
+PHP 5.2.x
+
+Documentation
+-----------------------------------------------
+
+
+Installation Instructions
+-----------------------------------------------
+1. Create a basic account at http://www.vimeo.com/join
+2. Log in to your Vimeo user account
+3. Register your web application at http://www.vimeo.com/api/applications/new (Ensure that you uncheck the checkbox for "Upload Permissions" as you will not need upload access for this module.)
+4. Place this directory in the root of your SilverStripe installation
+I.e. you will now have the following root folders
+
+assets
+mysite
+cms
+jsparty
+sapphire
+vimeoservice
+
+5. add the following to your mysite/_config.php:
+
+VimeoService::setAPIKey('vimeo_api_key'); // << Your Vimeo "Consumer key"
+VimeoService::setSecretKey('vimeo_secret_key'); // << You Vimeo "Consumer secret"
+
+6. Run /dev/build/
+
+7. The CMS should now have a new "VimeoGallery" page type.
+   Create a page and set the parameters correctly on 'Videos' tab to grab the videos for display.
+
+8. Add these and visit your public site to reflect the changes
+
+
+Usage Overview
+-----------------------------------------------
+The Vimeo module is designed to let you display a gallery of videos from the Vimeo video sharing site. The module also adds a shortcode to embed a Vimeo video
+into any text field.
+
+Known issues:
+-----------------------------------------------
