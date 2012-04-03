@@ -83,7 +83,7 @@ class VimeoService Extends RestfulService {
 	 * @static
 	 */
 	public static function setAPIKey($value) {
-		self::$api_key = $value;
+		self::$api_key = trim($value);
 	}
 	
 	/**
@@ -92,7 +92,7 @@ class VimeoService Extends RestfulService {
 	 * @static
 	 */
 	public static function setSecretKey($value) {
-		self::$api_secret_key = $value;
+		self::$api_secret_key = trim($value);
 	}
 	
 	public static function setDefaultWidth($value) {
