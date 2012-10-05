@@ -37,15 +37,15 @@ class VimeoGalleryPage extends Page {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		
-		$fields->addFieldToTab('Root.Content.Videos', new DropdownField("Method", _t('VimeoGalleryPage.SELECT', "Select"), array(
+		$fields->addFieldToTab('Root.Videos', new DropdownField("Method", _t('VimeoGalleryPage.SELECT', "Select"), array(
 			'1' => _t('VimeoGalleryPage.USER', 'User'),
 			'2' => _t('VimeoGalleryPage.GROUP', 'Group'),
 			'3' => _t('VimeoGalleryPage.ALBUM', 'Album')
 		)));
 		
-		$fields->addFieldToTab("Root.Content.Videos", new TextField("User", _t('VimeoGalleryPage.USER_ID_LABEL', "Vimeo Username/Vimeo Group Name/Vimeo Album ID")));
+		$fields->addFieldToTab("Root.Videos", new TextField("User", _t('VimeoGalleryPage.USER_ID_LABEL', "Vimeo Username/Vimeo Group Name/Vimeo Album ID")));
 		
-		$fields->addFieldsToTab("Root.Content.Videos", new DropdownField("VideosPerPage", _t('VimeoGalleryPage.VIDEOS_PER_PAGE', "Number of videos per page"), array(
+		$fields->addFieldsToTab("Root.Videos", new DropdownField("VideosPerPage", _t('VimeoGalleryPage.VIDEOS_PER_PAGE', "Number of videos per page"), array(
 			'10' => '10',
 			'20' => '20',
 			'30' => '30',
@@ -53,7 +53,7 @@ class VimeoGalleryPage extends Page {
 			'50' => '50'	
 		)));
 		
-		$fields->addFieldToTab("Root.Content.Videos", new DropdownField("SortField", _t('VimeoGalleryPage.SORT_BY', "Sort by"), array(
+		$fields->addFieldToTab("Root.Videos", new DropdownField("SortField", _t('VimeoGalleryPage.SORT_BY', "Sort by"), array(
 			'newest' => _t('VimeoGalleryPage.NEWEST', 'Newest'),
 			'oldest' => _t('VimeoGalleryPage.OLDEST', 'Oldest'),
 			'most_played' => _t('VimeoGalleryPage.MOST_PLAYED', 'Most played'),
@@ -61,9 +61,9 @@ class VimeoGalleryPage extends Page {
 			'most_liked' => _t('VimeoGalleryPage.MOST_LIKED', 'Most liked')
 		)));
 		
-		$fields->addFieldToTab("Root.Content.Videos", new CheckboxField("ShowVideoInPopup", _t('VimeoGalleryPage.VIDEO_IN_POPUP', "Show video in popup?")));
+		$fields->addFieldToTab("Root.Videos", new CheckboxField("ShowVideoInPopup", _t('VimeoGalleryPage.VIDEO_IN_POPUP', "Show video in popup?")));
 		
-		$fields->addFieldToTab("Root.Content.Videos", new DropdownField("PopupTheme", _t('VimeoGalleryPage.POPUP_THEME', "Popup theme"), array(
+		$fields->addFieldToTab("Root.Videos", new DropdownField("PopupTheme", _t('VimeoGalleryPage.POPUP_THEME', "Popup theme"), array(
 			'default' => _t('VimeoGalleryPage.DEFAULT', 'Default'),
 			'dark_square' => _t('VimeoGalleryPage.DARK_SQUARE', 'Dark Square'),
 			'dark_rounded' => _t('VimeoGalleryPage.DARK_ROUNDED', 'Dark Rounded'),
@@ -72,9 +72,9 @@ class VimeoGalleryPage extends Page {
 			'facebook' => _t('VimeoGalleryPage.FACEBOOK', 'Facebook')
 		)));
 		
-		$fields->addFieldToTab("Root.Content.Videos", new Textfield("PopupWidth", _t('VimeoGalleryPage.POPUP_WIDTH', "Popup width")));
+		$fields->addFieldToTab("Root.Videos", new Textfield("PopupWidth", _t('VimeoGalleryPage.POPUP_WIDTH', "Popup width")));
 		
-		$fields->addFieldToTab("Root.Content.Videos", new Textfield("PopupHeight", _t('VimeoGalleryPage.POPUP_HEIGHT', "Popup height")));
+		$fields->addFieldToTab("Root.Videos", new Textfield("PopupHeight", _t('VimeoGalleryPage.POPUP_HEIGHT', "Popup height")));
 		
 		return $fields;
 	}
@@ -108,7 +108,7 @@ class VimeoGalleryPage extends Page {
 		return $videos;
 	}
 	
-	function flushCache() {
+	function flushCache($persistent = true) {
 		parent::flushCache();
 		unset($this->_cachedVideos);
 	}
@@ -206,25 +206,25 @@ JS
 	///////////////////////// Page control functions ////////////////////////////
 	
 	
-	function Breadcrumbs() {
-		//Get the default breadcrumbs
-        $Breadcrumbs = parent::Breadcrumbs();
-		
-		//Explode them into their individual parts
-        $Parts = explode(SiteTree::$breadcrumbs_delimiter, $Breadcrumbs);
-		
-		// If we are viewing a single video, add link back to the index action of this controller
-		// and add the video title to the breadcrumbs.
-		$params = $this->getURLParams();
-		if($params['Action'] == 'view') {
-			$lastIdx = count($Parts)-1;
-			$Parts[$lastIdx] = '<a href="' . $this->Link() . '">' . $Parts[$lastIdx] . '</a>';
-			$Parts[] = !$this->_videoTitle ? _t('VimeoGalleryPage.UNTITLED_VIDEO', 'Untitled Video') : $this->_videoTitle;
-		}
-		
-		//Return the imploded array
-        $Breadcrumbs = implode(SiteTree::$breadcrumbs_delimiter, $Parts);
-		
-		return $Breadcrumbs;
-	}
+//	function Breadcrumbs() {
+//		//Get the default breadcrumbs
+//        $Breadcrumbs = parent::Breadcrumbs();
+//		
+//		//Explode them into their individual parts
+//        $Parts = explode(SiteTree::$breadcrumbs_delimiter, $Breadcrumbs);
+//		
+//		// If we are viewing a single video, add link back to the index action of this controller
+//		// and add the video title to the breadcrumbs.
+//		$params = $this->getURLParams();
+//		if($params['Action'] == 'view') {
+//			$lastIdx = count($Parts)-1;
+//			$Parts[$lastIdx] = '<a href="' . $this->Link() . '">' . $Parts[$lastIdx] . '</a>';
+//			$Parts[] = !$this->_videoTitle ? _t('VimeoGalleryPage.UNTITLED_VIDEO', 'Untitled Video') : $this->_videoTitle;
+//		}
+//		
+//		//Return the imploded array
+//        $Breadcrumbs = implode(SiteTree::$breadcrumbs_delimiter, $Parts);
+//		
+//		return $Breadcrumbs;
+//	}
 }
