@@ -11,7 +11,7 @@ Ronald Ferguson (Nickname: r0nn1ef)
 
 Requirements
 -----------------------------------------------
-SilverStripe 2.4.5
+SilverStripe 3.0.5
 PHP 5.2.x
 
 Documentation
@@ -24,14 +24,7 @@ Installation Instructions
 2. Log in to your Vimeo user account
 3. Register your web application at http://www.vimeo.com/api/applications/new (Ensure that you uncheck the checkbox for "Upload Permissions" as you will not need upload access for this module.)
 4. Place this directory in the root of your SilverStripe installation
-I.e. you will now have the following root folders
 
-assets
-mysite
-cms
-jsparty
-sapphire
-vimeoservice
 
 5. add the following to your mysite/_config.php:
 
