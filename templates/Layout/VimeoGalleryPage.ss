@@ -7,7 +7,7 @@ $Content
 	<p>&nbsp;</p>
 	<ul class="vimeo-video-list">
 		<% if VimeoVideos %>
-			<% control VimeoVideos %>
+			<% loop VimeoVideos %>
 				<li class="vimeo-video-container">
 					<div class="vimeo-video-thumb">
 						<% if Top.ShowVideoInPopup %>
@@ -39,7 +39,7 @@ $Content
 					</div>
 					<br style="clear:left;height:1px;" />
 				</li>
-			<% end_control %>
+			<% end_loop %>
 		<% else %>
 			<li>
 			<% if isUserRequest %>
@@ -57,7 +57,7 @@ $Content
 		<% if VimeoVideos.PrevLink %>
 		<a href="$VimeoVideos.PrevLink">&laquo; Prev</a>
 		<% end_if %>
-				
+
 		<% control VimeoVideos.Pages %>
 		<% if CurrentBool %>
 		<strong>$PageNum</strong>
@@ -65,7 +65,7 @@ $Content
 		<a href="$Link" title="Go to page $PageNum">$PageNum</a>
 		<% end_if %>
 		<% end_control %>
-				
+
 		<% if VimeoVideos.NextLink %>
 		<a href="$VimeoVideos.NextLink">Next &raquo;</a>
 		<% end_if %>
