@@ -30,30 +30,32 @@ class VimeoGalleryPage extends Page {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 
+		$vimeoToggle = ToggleCompositeField::create('Vimeo', "Video Settings",
+						array(
+							new DropdownField("Method", _t('VimeoGalleryPage.SELECT', "Select"), array(
+								'1' => _t('VimeoGalleryPage.USER', 'User'),
+								'2' => _t('VimeoGalleryPage.GROUP', 'Group'),
+								'3' => _t('VimeoGalleryPage.ALBUM', 'Album')
+							)),
+							new TextField("User", _t('VimeoGalleryPage.USER_ID_LABEL', "Vimeo Username/Vimeo Group Name/Vimeo Album ID")),
+							new DropdownField("VideosPerPage", _t('VimeoGalleryPage.VIDEOS_PER_PAGE', "Number of videos per page"), array(
+								'10' => '10',
+								'20' => '20',
+								'30' => '30',
+								'40' => '40',
+								'50' => '50'
+							)),
+							new DropdownField("SortField", _t('VimeoGalleryPage.SORT_BY', "Sort by"), array(
+								'newest' => _t('VimeoGalleryPage.NEWEST', 'Newest'),
+								'oldest' => _t('VimeoGalleryPage.OLDEST', 'Oldest'),
+								'most_played' => _t('VimeoGalleryPage.MOST_PLAYED', 'Most played'),
+								'most_commented' => _t('VimeoGalleryPage.MOST_COMMENTED', 'Most commented'),
+								'most_liked' => _t('VimeoGalleryPage.MOST_LIKED', 'Most liked')
+							))
+						)
+					)->setHeadingLevel(4);
 
-		$fields->addFieldToTab('Root.Vimeo', new DropdownField("Method", _t('VimeoGalleryPage.SELECT', "Select"), array(
-			'1' => _t('VimeoGalleryPage.USER', 'User'),
-			'2' => _t('VimeoGalleryPage.GROUP', 'Group'),
-			'3' => _t('VimeoGalleryPage.ALBUM', 'Album')
-		)));
-
-		$fields->addFieldToTab("Root.Vimeo", new TextField("User", _t('VimeoGalleryPage.USER_ID_LABEL', "Vimeo Username/Vimeo Group Name/Vimeo Album ID")));
-
-		$fields->addFieldsToTab("Root.Vimeo", new DropdownField("VideosPerPage", _t('VimeoGalleryPage.VIDEOS_PER_PAGE', "Number of videos per page"), array(
-			'10' => '10',
-			'20' => '20',
-			'30' => '30',
-			'40' => '40',
-			'50' => '50'
-		)));
-
-		$fields->addFieldToTab("Root.Vimeo", new DropdownField("SortField", _t('VimeoGalleryPage.SORT_BY', "Sort by"), array(
-			'newest' => _t('VimeoGalleryPage.NEWEST', 'Newest'),
-			'oldest' => _t('VimeoGalleryPage.OLDEST', 'Oldest'),
-			'most_played' => _t('VimeoGalleryPage.MOST_PLAYED', 'Most played'),
-			'most_commented' => _t('VimeoGalleryPage.MOST_COMMENTED', 'Most commented'),
-			'most_liked' => _t('VimeoGalleryPage.MOST_LIKED', 'Most liked')
-		)));
+		$fields->insertBefore($vimeoToggle, "Metadata");
 
 		return $fields;
 	}
