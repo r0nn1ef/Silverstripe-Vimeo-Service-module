@@ -104,9 +104,6 @@ class VimeoGalleryPage extends Page {
 				return false;
 		}
 
-		//$sort_direction = ($this->SortField == 'Title' ? 'ASC' : 'DESC');
-		//$videos->sort($this->SortField, $sort_direction);
-
 		$this->_cachedVideos = $videos;
 
 		return $videos;
@@ -149,31 +146,6 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 			Requirements::css("vimeoservice/css/VimeoGallery.css");
 		}
 
-		// only include if necessary
-
-		if($this->ShowVideoInPopup) {
-
-			Requirements::javascript( "vimeoservice/javascript/jquery-1.4.4.min.js" );
-			Requirements::javascript( "vimeoservice/javascript/jquery.prettyPhoto.js" );
-			Requirements::css('vimeoservice/css/prettyPhoto.css');
-
-			$theme = $this->PopupTheme ? $this->PopupTheme : 'default';
-			$width = $this->PopupWidth < 1 ? 400 : $this->PopupWidth;
-			$height = $this->PopupHeight < 1 ? 225 : $this->PopupHeight;
-
-			Requirements::customScript(<<<JS
-$(document).ready(function(){
-$("a[rel^='prettyPhoto']").prettyPhoto({
-theme:'$theme',
-default_width: $width,
-default_height: $height,
-});
-});
-JS
-			);
-
-		}
-
 		parent::init();
 	}
 
@@ -212,28 +184,22 @@ JS
 
 
 	function Breadcrumbs() {
-		return FALSE;
-		/*
+
 		//Get the default breadcrumbs
         $Breadcrumbs = parent::Breadcrumbs();
-
-		//Explode them into their individual parts
-        $Parts = explode(SiteTree::$breadcrumbs_delimiter, $Breadcrumbs);
 
 		// If we are viewing a single video, add link back to the index action of this controller
 		// and add the video title to the breadcrumbs.
 		$params = $this->getURLParams();
 		if($params['Action'] == 'view') {
-			$lastIdx = count($Parts)-1;
-			$Parts[$lastIdx] = '<a href="' . $this->Link() . '">' . $Parts[$lastIdx] . '</a>';
-			$Parts[] = !$this->_videoTitle ? _t('VimeoGalleryPage.UNTITLED_VIDEO', 'Untitled Video') : $this->_videoTitle;
+			// $lastIdx = count($Parts)-1;
+			// $Parts[$lastIdx] = '<a href="' . $this->Link() . '">' . $Parts[$lastIdx] . '</a>';
+			// $Parts[] = !$this->_videoTitle ? _t('VimeoGalleryPage.UNTITLED_VIDEO', 'Untitled Video') : $this->_videoTitle;
 		}
 
 		//Return the imploded array
-        $Breadcrumbs = implode(SiteTree::$breadcrumbs_delimiter, $Parts);
+        //$Breadcrumbs = implode(SiteTree::$breadcrumbs_delimiter, $Parts);
 
 		return $Breadcrumbs;
-		 *
-		 */
 	}
 }
