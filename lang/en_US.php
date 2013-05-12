@@ -7,55 +7,57 @@ global $lang;
 
 
 // Output for class or file: VimeoGalleryPage
-$lang['en_US']['VimeoGalleryPage']['SINGULAR_NAME'] = 
+$lang['en_US']['VimeoGalleryPage']['Settings'] =
+	'Vimeo';
+$lang['en_US']['VimeoGalleryPage']['SINGULAR_NAME'] =
 	'Vimeo Gallery Page';
-$lang['en_US']['VimeoGalleryPage']['PLURAL_NAME'] = 
+$lang['en_US']['VimeoGalleryPage']['PLURAL_NAME'] =
 	'Vimeo Gallery Pages';
-$lang['en_US']['VimeoGalleryPage']['SELECT'] = 
+$lang['en_US']['VimeoGalleryPage']['SELECT'] =
 	'Select';
-$lang['en_US']['VimeoGalleryPage']['USER'] = 
+$lang['en_US']['VimeoGalleryPage']['USER'] =
 	'User';
-$lang['en_US']['VimeoGalleryPage']['GROUP'] = 
+$lang['en_US']['VimeoGalleryPage']['GROUP'] =
 	'Group';
-$lang['en_US']['VimeoGalleryPage']['ALBUM'] = 
+$lang['en_US']['VimeoGalleryPage']['ALBUM'] =
 	'Album';
-$lang['en_US']['VimeoGalleryPage']['USER_ID_LABEL'] = 
+$lang['en_US']['VimeoGalleryPage']['USER_ID_LABEL'] =
 	'Vimeo Username/Vimeo Group Name/Vimeo Album ID';
-$lang['en_US']['VimeoGalleryPage']['VIDEOS_PER_PAGE'] = 
+$lang['en_US']['VimeoGalleryPage']['VIDEOS_PER_PAGE'] =
 	'Number of videos per page';
-$lang['en_US']['VimeoGalleryPage']['SORT_BY'] = 
+$lang['en_US']['VimeoGalleryPage']['SORT_BY'] =
 	'Sort by';
-$lang['en_US']['VimeoGalleryPage']['NEWEST'] = 
+$lang['en_US']['VimeoGalleryPage']['NEWEST'] =
 	'Newest';
-$lang['en_US']['VimeoGalleryPage']['OLDEST'] = 
+$lang['en_US']['VimeoGalleryPage']['OLDEST'] =
 	'Oldest';
-$lang['en_US']['VimeoGalleryPage']['MOST_PLAYED'] = 
+$lang['en_US']['VimeoGalleryPage']['MOST_PLAYED'] =
 	'Most played';
-$lang['en_US']['VimeoGalleryPage']['MOST_COMMENTED'] = 
+$lang['en_US']['VimeoGalleryPage']['MOST_COMMENTED'] =
 	'Most commented';
-$lang['en_US']['VimeoGalleryPage']['MOST_LIKED'] = 
+$lang['en_US']['VimeoGalleryPage']['MOST_LIKED'] =
 	'Most liked';
-$lang['en_US']['VimeoGalleryPage']['VIDEO_IN_POPUP'] = 
+$lang['en_US']['VimeoGalleryPage']['VIDEO_IN_POPUP'] =
 	'Show video in popup?';
-$lang['en_US']['VimeoGalleryPage']['POPUP_THEME'] = 
+$lang['en_US']['VimeoGalleryPage']['POPUP_THEME'] =
 	'Popup theme';
-$lang['en_US']['VimeoGalleryPage']['DEFAULT'] = 
+$lang['en_US']['VimeoGalleryPage']['DEFAULT'] =
 	'Default';
-$lang['en_US']['VimeoGalleryPage']['DARK_SQUARE'] = 
+$lang['en_US']['VimeoGalleryPage']['DARK_SQUARE'] =
 	'Dark Square';
-$lang['en_US']['VimeoGalleryPage']['DARK_ROUNDED'] = 
+$lang['en_US']['VimeoGalleryPage']['DARK_ROUNDED'] =
 	'Dark Rounded';
-$lang['en_US']['VimeoGalleryPage']['LIGHT_SQUARE'] = 
+$lang['en_US']['VimeoGalleryPage']['LIGHT_SQUARE'] =
 	'Light Square';
-$lang['en_US']['VimeoGalleryPage']['LIGHT_ROUNDED'] = 
+$lang['en_US']['VimeoGalleryPage']['LIGHT_ROUNDED'] =
 	'Light Rounded';
-$lang['en_US']['VimeoGalleryPage']['FACEBOOK'] = 
+$lang['en_US']['VimeoGalleryPage']['FACEBOOK'] =
 	'Facebook';
-$lang['en_US']['VimeoGalleryPage']['POPUP_WIDTH'] = 
+$lang['en_US']['VimeoGalleryPage']['POPUP_WIDTH'] =
 	'Popup width';
-$lang['en_US']['VimeoGalleryPage']['POPUP_HEIGHT'] = 
+$lang['en_US']['VimeoGalleryPage']['POPUP_HEIGHT'] =
 	'Popup height';
-$lang['en_US']['VimeoGalleryPage']['VIDEO_NOT_FOUND'] = 
+$lang['en_US']['VimeoGalleryPage']['VIDEO_NOT_FOUND'] =
 	'Sorry that video could not be found.';
-$lang['en_US']['VimeoGalleryPage']['UNTITLED_VIDEO'] = 
+$lang['en_US']['VimeoGalleryPage']['UNTITLED_VIDEO'] =
 	'Untitled Video';
