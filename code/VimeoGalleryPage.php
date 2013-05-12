@@ -11,10 +11,6 @@ class VimeoGalleryPage extends Page {
 		'Method' => 'Int',
 		'User' => 'Varchar(100)',
 		'VideosPerPage' => 'Int',
-		'ShowVideoInPopup' => 'Boolean',
-		'PopupTheme' => 'Varchar(20)',
-		'PopupWidth' => 'Int',
-		'PopupHeight' => 'Int',
 		'SortField' => 'Varchar(100)'
 	);
 
@@ -22,15 +18,12 @@ class VimeoGalleryPage extends Page {
 		'Method' => 1,
 		'ShowVideoInPopup' => true,
 		'VideosPerPage' => 10,
-		'PopupTheme' => 'default',
-		'PopupWidth' => 400,
-		'PopupHeight' => 225,
 		'SortField' => 'UploadDate'
 	);
 
 	public static $allowed_children = array();
 
-	public static $icon = 'vimeoservice/images/vimeo';
+	public static $icon = 'vimeoservice/images/vimeo-file.gif';
 
 	protected $_cachedVideos = null;
 
@@ -62,21 +55,6 @@ class VimeoGalleryPage extends Page {
 			'most_commented' => _t('VimeoGalleryPage.MOST_COMMENTED', 'Most commented'),
 			'most_liked' => _t('VimeoGalleryPage.MOST_LIKED', 'Most liked')
 		)));
-
-		$fields->addFieldToTab("Root.Vimeo", new CheckboxField("ShowVideoInPopup", _t('VimeoGalleryPage.VIDEO_IN_POPUP', "Show video in popup?")));
-
-		$fields->addFieldToTab("Root.Vimeo", new DropdownField("PopupTheme", _t('VimeoGalleryPage.POPUP_THEME', "Popup theme"), array(
-			'default' => _t('VimeoGalleryPage.DEFAULT', 'Default'),
-			'dark_square' => _t('VimeoGalleryPage.DARK_SQUARE', 'Dark Square'),
-			'dark_rounded' => _t('VimeoGalleryPage.DARK_ROUNDED', 'Dark Rounded'),
-			'light_square' => _t('VimeoGalleryPage.LIGHT_SQUARE', 'Light Square'),
-			'light_rounded' => _t('VimeoGalleryPage.LIGHT_ROUNDED', 'Light Rounded'),
-			'facebook' => _t('VimeoGalleryPage.FACEBOOK', 'Facebook')
-		)));
-
-		$fields->addFieldToTab("Root.Vimeo", new Textfield("PopupWidth", _t('VimeoGalleryPage.POPUP_WIDTH', "Popup width")));
-
-		$fields->addFieldToTab("Root.Vimeo", new Textfield("PopupHeight", _t('VimeoGalleryPage.POPUP_HEIGHT', "Popup height")));
 
 		return $fields;
 	}
@@ -196,9 +174,6 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 			// $Parts[$lastIdx] = '<a href="' . $this->Link() . '">' . $Parts[$lastIdx] . '</a>';
 			// $Parts[] = !$this->_videoTitle ? _t('VimeoGalleryPage.UNTITLED_VIDEO', 'Untitled Video') : $this->_videoTitle;
 		}
-
-		//Return the imploded array
-        //$Breadcrumbs = implode(SiteTree::$breadcrumbs_delimiter, $Parts);
 
 		return $Breadcrumbs;
 	}
