@@ -1,29 +1,17 @@
-<% if Breadcrumbs %>
-<p>$Breadcrumbs</p>
-<% end_if %>
-<div class="typeography vimeogallery">
-<h2>$Title</h2>
-$Content
-	<p>&nbsp;</p>
+<div class="content-container vimeogallery">
+<article>
+	<h1>$Title</h1>
+	<div class="content">$Content</div>
+</article>
 	<ul class="vimeo-video-list">
 		<% if VimeoVideos %>
 			<% loop VimeoVideos %>
 				<li class="vimeo-video-container">
 					<div class="vimeo-video-thumb">
-						<% if Top.ShowVideoInPopup %>
-							<a href="{$Url}" <% if Top.ShowVideoInPopup %>rel="prettyPhoto"<% else %>target="_blank"<% end_if %>><img src="{$ThumbSmall}" width="100" alt="{$Title}" /></a>
-						<% else %>
-							<a href="{$Top.Link}view/{$ID}"><img src="{$ThumbSmall}" width="100" alt="{$Title}" /></a>
-						<% end_if %>
+						<a href="{$Top.Link}view/{$ID}"><img src="{$ThumbSmall}" width="100" alt="{$Title}" /></a>
 					</div>
 					<div class="vimeo-video-details">
-						<h3>
-						<% if Top.ShowVideoInPopup %>
-							<a href="$Url" <% if Top.ShowVideoInPopup %>rel="prettyPhoto"<% else %>target="_blank"<% end_if %>>$Title</a>
-						<% else %>
-							<a href="{$Top.Link}view/{$ID}">$Title</a>
-						<% end_if %>
-						 <span class="vimeo-duration">($Duration seconds)</span></h3>
+						<h3><a href="{$Top.Link}view/{$ID}">$Title</a></h3>
 						<p class="vimeo-upload-date">Uploaded by <a href="{$UserUrl}" target="_blank">$UserDisplayName</a> on $UploadDate.Format(n/j/Y g:i a)</p>
 						<% if Tags %>
 							<p class="vimeo-tags">Tags: $Tags</p>
@@ -32,12 +20,13 @@ $Content
 							$Description.FirstParagraph
 						<% end_if %>
 						<p class="vimeo-stats">
+							Duration: $Duration seconds<br />
 							Plays: $NumberPlays<br />
 							Likes: $NumberLikes <br />
 							Comments: $NumberComments
 						</p>
 					</div>
-					<br style="clear:left;height:1px;" />
+					<div class="clearfix"></div>
 				</li>
 			<% end_loop %>
 		<% else %>
@@ -71,6 +60,7 @@ $Content
 		<% end_if %>
 		</p>
 	<% end_if %>
-	<a href="http://www.vimeo.com" target="_blank" id="vimeo-powered-by">&nbsp;</a>
-<div class="clear">&nbsp;</div>
+	<a href="http://www.vimeo.com" target="_blank" id="vimeo-powered-by" title="Powered by Vimeo&trade;" rel="no-follow">&nbsp;</a>
+<div class="clearfix"></div>
 </div>
+<% include SideBar %>
