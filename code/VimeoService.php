@@ -1,100 +1,98 @@
 <?php
 /**
  * Service class to interface SilverStripe with the Vimeo video sharing service.
- * 
+ *
  * @author Ronald Ferguson
  * @version 1.0
  * @package vimeoservice
  */
 class VimeoService Extends RestfulService {
-	
+
 	/**
 	 * Default player width
 	 * @access protected
 	 * @static
 	 */
 	protected static $player_width = 400;
-	
+
 	/**
 	 * Default player height
 	 * @access protected
 	 * @static
 	 */
 	protected static $player_height = 225;
-	
+
 	/**
 	 * API key supplied by Vimeo to use the advanced api
 	 * @access protected
-	 * @static
 	 */
-	protected static $api_key;
-	
+	protected $api_key;
+
 	/**
 	 * API key secret supplied by Vimeo for use with the API key
 	 * @access protected
-	 * @static
+
 	 */
-	protected static $api_secret_key;
-	
+	protected $api_secret_key;
+
 	protected static $token;
-	
+
 	protected static $token_secret;
-	
+
 	/**
 	 * Base URL for the Vimeo advanced api
 	 * @static
 	 */
 	public static $api_base_url = 'http://vimeo.com/api/rest/v2';
-	
+
 	/**
 	 * @var integer
 	 * @access protected
 	 */
 	protected $video_count;
-	
+
 	/**
 	 * @var integer
 	 * @access protected
 	 */
 	protected $page_count;
-	
+
 	/**
 	 * Constructor
-	 * @param Set the cache expiry interva. Defaults to 1 hour (3600 seconds) 
+	 * @param Set the cache expiry interva. Defaults to 1 hour (3600 seconds)
 	 * @see RestfulService
 	 * @return void
 	 */
-	function __construct($expiry=NULL) {
+	function __construct($apiKey, $apiSecretKey, $expiry=NULL) {
 		parent::__construct(self::$api_base_url, $expiry);
-		
+		$this->api_key = $apiKey;
+		$this->api_secret_key = $apiSecretKey;
 		$this->checkErrors = true;
 	}
-	
+
 	function errorCatch($response){
 		$err_msg = $response;
 		if(strpos($err_msg, '<') === false) user_error("VimeoService Error: $err_msg", E_USER_ERROR);
 
 		return $response;
 	}
-	
+
 	/**
 	 * Set the API key supplied by Vimeo
 	 * @param string
-	 * @static
 	 */
-	public static function setAPIKey($value) {
-		self::$api_key = trim($value);
+	public function setAPIKey($value) {
+		$this->api_key = trim($value);
 	}
-	
+
 	/**
 	 * Set the API key secret provided by Vimeo.
 	 * @param string
-	 * @static
 	 */
-	public static function setSecretKey($value) {
-		self::$api_secret_key = trim($value);
+	public function setSecretKey($value) {
+		$this->api_secret_key = trim($value);
 	}
-	
+
 	public static function setDefaultWidth($value) {
 		$value = intval($value);
 		if($value == 0) {
@@ -102,7 +100,7 @@ class VimeoService Extends RestfulService {
 		}
 		self::$player_width = $value;
 	}
-	
+
 	public static function setDefaultHeight($value) {
 		$value = intval($value);
 		if($value == 0) {
@@ -110,15 +108,15 @@ class VimeoService Extends RestfulService {
 		}
 		self::$player_height = $value;
 	}
-	
+
 	public static function getDefaultHeight() {
 		return self::$player_height;
 	}
-	
+
 	public static function getDefaultWidth() {
 		return self::$player_width;
 	}
-	
+
 	/**
 	 * Returns a collection of Vimeo videos for a given method.
 	 * @param string
@@ -127,37 +125,37 @@ class VimeoService Extends RestfulService {
 	 * @return DataObjectSet or boolean false
 	 */
 	function getVideoFeed($method=NULL, $call_params=array(), $page_limit=10) {
-		if(!self::$api_key || ! self::$api_secret_key) {
+		if(! $this->api_key || ! $this->api_secret_key) {
 			user_error('Fatal error: Invalid API keyand/or secret specified!');
 			return false;
 		}
-		
+
 		// Prepare oauth arguments
         $oauth_params = array(
-            'oauth_consumer_key' => self::$api_key,
+            'oauth_consumer_key' => $this->api_key,
             'oauth_version' => '1.0',
             'oauth_signature_method' => 'HMAC-SHA1',
             'oauth_timestamp' => time(),
             'oauth_nonce' => $this->_generateNonce()
         );
-        
+
         $page = $call_params['start'] == 0 ? 1 : (($call_params['start']) / $page_limit + 1);
-        
+
         if(self::$token) {
         	$oauth_params['oauth_token'] = self::$token;
         }
-        
+
 		$api_params = array(
 			'format' => 'php',
 			'full_response' => 1,
 			'per_page' => $page_limit,
 			'page' => $page
 		);
-		
+
         if (!empty($method)) {
             $api_params['method'] = $method;
         }
-		
+
 		// Merge args
         foreach ($call_params as $k => $v) {
             if (strpos($k, 'oauth_') === 0) {
@@ -167,67 +165,66 @@ class VimeoService Extends RestfulService {
                 $api_params[$k] = $v;
             }
         }
-        
+
         // Generate the signature
         $oauth_params['oauth_signature'] = $this->_generateSignature(array_merge($oauth_params, $api_params), self::$api_base_url);
-		
+
         // Merge all args
         $params = array_merge($oauth_params, $api_params);
-        
+
 		$this->setQueryString($params);
-		
+
 		$response = $this->request();
-		
+
 		$videos = unserialize($response->getBody());
-		
+
 		if(isset($videos->videos)) {
-			$results = new DataObjectSet();
+			$results = new ArrayList();
 			foreach($videos->videos->video as $video) {
-				$data = $this->_extractVideoInfo($video);
 				/*
 				 * @todo Add sorting
 				 */
-				$results->push(new ArrayData($data));
+				$results->push(new ArrayData($this->_extractVideoInfo($video)));
 			}
-	
+
 			// since we manually created the dataobjectset, we need to set the pager info manually, too.
-			$results->setPageLimits($call_params['start'], $page_limit, intval($videos->videos->total));
+			// $results->setPageLimits($call_params['start'], $page_limit, intval($videos->videos->total));
 		} else {
 			$results = false;
 		}
-		
+
 		return $results;
 	}
-	
+
 	/**
 	 * Returns a Vimeo video object
 	 * @param array
 	 * @return ArrayData or boolean false
 	 */
 	function getSingleVideo($call_params=array()) {
-		if(!self::$api_key || ! self::$api_secret_key) {
+		if(!$this->api_key || ! $this->api_secret_key) {
 			user_error('Fatal error: Invalid API keyand/or secret specified!');
 			return false;
 		}
-		
+
 		// Prepare oauth arguments
         $oauth_params = array(
-            'oauth_consumer_key' => self::$api_key,
+            'oauth_consumer_key' => $this->api_key,
             'oauth_version' => '1.0',
             'oauth_signature_method' => 'HMAC-SHA1',
             'oauth_timestamp' => time(),
             'oauth_nonce' => $this->_generateNonce()
         );
-        
+
         if(self::$token) {
         	$oauth_params['oauth_token'] = self::$token;
         }
-        
+
 		$api_params = array(
 			'format' => 'php',
 			'method' => 'vimeo.videos.getInfo'
 		);
-		
+
 		// Merge args
         foreach ($call_params as $k => $v) {
             if (strpos($k, 'oauth_') === 0) {
@@ -237,35 +234,35 @@ class VimeoService Extends RestfulService {
                 $api_params[$k] = $v;
             }
         }
-        
+
         // Generate the signature
         $oauth_params['oauth_signature'] = $this->_generateSignature(array_merge($oauth_params, $api_params), self::$api_base_url);
-		
+
         // Merge all args
         $params = array_merge($oauth_params, $api_params);
-        
+
 		$this->setQueryString($params);
-		
+
 		$response = $this->request();
-		
+
 		$video = unserialize($response->getBody());
-		
+
 		if(isset($video->video)) {
 			$results = new DataObjectSet();
 			foreach($video->video as $video) {
 				$data = $this->_extractVideoInfo($video);
 				$results->push(new ArrayData($data));
 			}
-	
+
 			// since we manually created the dataobjectset, we need to set the pager info manually, too.
 			$results = $results->First();
 		} else {
 			$results = false;
 		}
-		
+
 		return $results;
 	}
-	
+
 	/**
 	 * Extracts and populates an array structure with the video information returned from Vimeo for a single video object.
 	 * @param Object
@@ -285,7 +282,7 @@ class VimeoService Extends RestfulService {
 		$desc = '<p>' . str_replace('<br />', '</p><p>', $desc) . '</p>';
 		$video['Description'] = new HTMLText();
 		$video['Description']->setValue($desc);
-		
+
 		// video url info
 		foreach($data->urls->url as $url) {
 			switch($url->type) {
@@ -302,7 +299,7 @@ class VimeoService Extends RestfulService {
 					break;
 			}
 		}
-		
+
 		// video date info
 		$upload_date = trim($data->upload_date);
 		// create a SS_Datetime object so we can use familiar functionality.
@@ -314,7 +311,7 @@ class VimeoService Extends RestfulService {
 		$md = new SS_Datetime();
 		$md->setValue($modified_date);
 		$video['ModifiedDate'] = $md;
-		
+
 		// video thumbnail info
 		foreach($data->thumbnails->thumbnail as $tn) {
 			if(strpos($tn->_content, '_100.jpg') !== false) {
@@ -326,9 +323,9 @@ class VimeoService Extends RestfulService {
 			} elseif (strpos($tn->_content, '_640.jpg') !== false) {
 				$video['ThumbLarge'] = new Text();
 				$video['ThumbLarge']->setValue(trim($tn->_content));
-			} 
+			}
 		}
-		
+
 		// User information
 		$video['UserName'] = new Varchar(null, 255);
 		$video['UserName']->setValue(trim($data->owner->username));
@@ -364,7 +361,7 @@ class VimeoService Extends RestfulService {
 					break;
 			}
 		}
-		
+
 		$video['NumberLikes'] = intval(trim($data->number_of_likes));
 		$video['NumberPlays'] = intval(trim($data->number_of_plays));
 		$video['NumberComments'] = intval(trim($data->number_of_comments));
@@ -375,10 +372,10 @@ class VimeoService Extends RestfulService {
 		$video['IsHD']->setValue(intval($data->is_hd));
 		$video['EmbedPrivacy'] = new Text();
 		$video['EmbedPrivacy']->setValue(trim($data->embed_privacy));
-		
+
 		return $video;
 	}
-	
+
 	/**
 	 * Generates unique identifier used in OAuth signature.
 	 * @access protected
@@ -387,7 +384,7 @@ class VimeoService Extends RestfulService {
 	protected function _generateNonce() {
 		return md5(uniqid(microtime()));
 	}
-	
+
 	/**
 	 * Generates OAuth signature required to call Vimeo advanced API functions.
 	 * @param array
@@ -412,7 +409,7 @@ class VimeoService Extends RestfulService {
 
         // Make the key
         $key_parts = array(
-            self::$api_secret_key,
+            $this->api_secret_key,
             (self::$token_secret) ? self::$token_secret : ''
         );
         $key_parts = self::url_encode_rfc3986($key_parts);
@@ -421,7 +418,7 @@ class VimeoService Extends RestfulService {
         // Generate signature
         return base64_encode(hash_hmac('sha1', $base_string, $key, true));
     }
-	
+
 	/**
 	 * Gets paged video list for videos of a specific user.
 	 * @param string
@@ -437,7 +434,7 @@ class VimeoService Extends RestfulService {
 		$method = 'vimeo.videos.getAll';
 		return $this->getVideoFeed($method, $params, $per_page);
 	}
-	
+
 	/**
 	 * Gets paged video list for videos of a specific Vimeo group.
 	 * @param string
@@ -453,7 +450,7 @@ class VimeoService Extends RestfulService {
 		$method = 'vimeo.groups.getVideos';
 		return $this->getVideoFeed($method, $params, $per_page);
 	}
-	
+
 	/**
 	 * Gets paged video list for videos of a specific Vimeo album.
 	 * @param integer
@@ -470,7 +467,7 @@ class VimeoService Extends RestfulService {
 		$method = 'vimeo.albums.getVideos';
 		return $this->getVideoFeed($method, $params, $per_page);
 	}
-	
+
 	/**
 	 * Gets specific Vimeo video.
 	 * @param integer
@@ -481,7 +478,7 @@ class VimeoService Extends RestfulService {
 		$params = array('video_id' => $videoid);
 		return $this->getSingleVideo($params);
 	}
-	
+
 	/**
 	 * URL encode a parameter or array of parameters.
 	 * @param mixed
