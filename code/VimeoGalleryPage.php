@@ -30,8 +30,7 @@ class VimeoGalleryPage extends Page {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		// $fields->findOrMakeTab("Root.Vimeo", _t('VimeoGalleryPage.SETTINGS', "Vimeo"));
-		// var_dump($tab);exit;
+
 		$fields->addFieldToTab('Root.Vimeo', new DropdownField("Method", _t('VimeoGalleryPage.SELECT', "Select"), array(
 			'1' => _t('VimeoGalleryPage.USER', 'User'),
 			'2' => _t('VimeoGalleryPage.GROUP', 'Group'),
