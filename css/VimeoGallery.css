@@ -9,49 +9,55 @@
 	background:transparent url(../images/vimeo-powered-by.png) top left no-repeat;
 	text-decoration:none !important;
 }
-.typeography ul.vimeo-video-list {
-
+.vimeogallery ul.vimeo-video-list {
+	margin: 0;
 }
-.typeography ul.vimeo-video-list li.vimeo-video-container {
-
+.vimeogallery ul.vimeo-video-list li.vimeo-video-container {
+	list-style:outside;
+	list-style-type: none;
+	margin-bottom: 24px;
 }
 
-.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb {
+.vimeogallery ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb {
 	float:left;
 	width:100px;
 	padding:5px;
 	text-align:center;
 }
 
-.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb a {
+.vimeogallery ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb a {
 	text-decoration:none;
 }
 
-.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb img {
+.vimeogallery ul.vimeo-video-list li.vimeo-video-container .vimeo-video-thumb img {
 	border:none;
 }
 
-.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details {
+.vimeogallery ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details {
 	float:left;
 	padding:5px;
-	width:500px;
+	width:850px;
 }
 
-.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details h3 span.vimeo-duration {
-	font-size:0.7em;
+.vimeogallery ul.vimeo-video-list li.vimeo-video-container .clearfix:after {
+	height: 0;
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
 }
 
-.typeography ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details p {
+.vimeogallery ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details p {
 	margin:5px auto;
 }
 
-.typeography .pageNumbers {
+.vimeogallery .pageNumbers {
 	float:left;
 	clear:left;
 	margin:0 25%;
 }
 
-.typeography .pageNumbers a, .typeography .pageNumbers strong {
+.vimeogallery .pageNumbers a, .vimeogallery .pageNumbers strong {
 	float:left;
 	display:block;
 	width:auto;
@@ -62,11 +68,11 @@
 	margin:3px;
 }
 
-.typeography .pageNumbers a:link, .typeography .pageNumbers a:visited, .typeography .pageNumbers a:hover {
+.vimeogallery .pageNumbers a:link, .vimeogallery .pageNumbers a:visited, .vimeogallery .pageNumbers a:hover {
 	text-decoration:none;
 }
 
-.typeography .pageNumbers a:hover, .typeography .pageNumbers strong {
+.vimeogallery .pageNumbers a:hover, .vimeogallery .pageNumbers strong {
 	border-color:#3e91c4;
 	background-color:#ffffff;
 	color:#3e91c4;
