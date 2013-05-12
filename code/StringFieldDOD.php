@@ -1,5 +1,5 @@
 <?php
-	class StringFieldDOD extends DataObjectDecorator {
+	class StringFieldDOD extends DataExtension {
 		/**
 		 * Returns the value of the field URL encoded.
 		 * @return string;
