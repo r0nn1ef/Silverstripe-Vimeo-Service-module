@@ -58,18 +58,6 @@ class VimeoService Extends RestfulService {
 	protected $page_count;
 
 	/**
-	 * @var SiteConfig
-	 * @access protected
-	 */
-	protected $site_config;
-
-	/**
-	 * @var VimeoService;
-	 * @access protected;
-	 */
-	protected static $instance;
-
-	/**
 	 * Constructor
 	 * @param Set the cache expiry interva. Defaults to 1 hour (3600 seconds)
 	 * @see RestfulService
@@ -78,8 +66,8 @@ class VimeoService Extends RestfulService {
 	function __construct($expiry=NULL) {
 		parent::__construct(self::$api_base_url, $expiry);
 		$this->checkErrors = true;
-		$this->setAPIKey($this->site_config->VimeoAPIKey);
-		$this->setSecretKey($this->site_config->VimeoSecretKey);
+		$this->setAPIKey(SiteConfig::current_site_config()->VimeoAPIKey);
+		$this->setSecretKey(SiteConfig::current_site_config()->VimeoSecretKey);
 	}
 
 
