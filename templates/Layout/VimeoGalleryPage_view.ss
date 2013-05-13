@@ -1,28 +1,18 @@
-<% if Breadcrumbs %>
-<p>$Breadcrumbs</p>
-<% end_if %>
-<% control Video %>
-<div class="typeography vimeogallery">
-	<h2>$Title</h2>
-	<div class="video-wrapper">
-		<iframe src="http://player.vimeo.com/video/{$ID}" width="{$Top.PopupWidth}" height="{$Top.PopupHeight}" frameborder="0" style="margin-bottom:8px;"></iframe>
-		<iframe src="http://www.facebook.com/plugins/like.php?app_id=221594161204508&amp;href={$Url}&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=lucida+grande&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe>
-	</div>
-	<div class="video-stats">
-		<ul>
-			<li>Number Plays: <span class="vimeo-stat">$NumberPlays</span></li>
-			<li>Number Likes: <span class="vimeo-stat">$NumberLikes</span></li>
-			<li>Number Comments: <span class="vimeo-stat">$NumberComments</span></li>
-		</ul>
-	</div>
-	<div class="video-owner">
-		Uploaded by <a href="{$UserUrl}" target="_blank">$UserRealName</a> on $UploadDate.Format(n/j/Y).
-	</div>
-	<% if Description %>
-		<div class="video-description">
-			$Description
+<div class="vimeogallery vimeo-video-details">
+	<article id="vimeo-{$Video.ID}">
+		<h1>$Video.Title</h1>
+		<div class="video-wrapper">
+			<iframe src="{$VideoURL}" width="{$VideoWidth}" height="{$VideoHeight}" frameborder="0" id="vimeo-video-{$Video.ID}" class="vimeo-video-frame"></iframe>
 		</div>
-	<% end_if %>
+		<% with Video %><% include VideoStats %><% end_with %>
+		<div class="video-owner">
+			Uploaded by <a href="{$Video.UserUrl}" target="_blank">$Video.UserRealName</a> on {$Video.UploadDate.Format(n/j/Y g:i a)}.
+		</div>
+		<% if Video.Description %>
+			<div class="video-description">
+				$Video.Description
+			</div>
+		<% end_if %>
+	</article>
 	<a href="http://www.vimeo.com" target="_blank" id="vimeo-powered-by">&nbsp;</a>
 </div>
-<% end_control %>
