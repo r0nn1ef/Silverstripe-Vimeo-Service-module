@@ -19,12 +19,7 @@
 						<% if Description %>
 							$Description.FirstParagraph
 						<% end_if %>
-						<p class="vimeo-stats">
-							Duration: $Duration seconds<br />
-							Plays: $NumberPlays<br />
-							Likes: $NumberLikes <br />
-							Comments: $NumberComments
-						</p>
+						<% include VideoStats %>
 					</div>
 					<div class="clearfix"></div>
 				</li>
