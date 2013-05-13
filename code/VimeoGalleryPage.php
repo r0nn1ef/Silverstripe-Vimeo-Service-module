@@ -95,7 +95,7 @@ class VimeoGalleryPage extends Page {
 
 		$config = SiteConfig::current_site_config();
 
-		$vimeo = new VimeoService($config->VimeoAPIKey, $config->VimeoSecretKey);
+		$vimeo = new VimeoService();
 		$start = isset($_GET['start']) ? (int)$_GET['start'] : 0;
 		$per_page = intval($this->VideosPerPage) < 10 ? 10 : intval($this->VideosPerPage);
 		switch($this->Method) {
@@ -124,12 +124,43 @@ class VimeoGalleryPage extends Page {
 
 	public static function VimeoShortcodeHandler($attributes, $content=null, $parser=null) {
 		if(!isset($attributes['id'])) return '';
-		$width = isset($attributes['width']) ? intval($attributes['width']) : VimeoService::getDefaultWidth();
-		$height = isset($attributes['height']) ? intval($attributes['height']) : VimeoService::getDefaultHeight();
+		$width = isset($attributes['width']) ? intval($attributes['width']) : SiteConfig::current_site_config()->VimeoDefaultWidth;
+		$height = isset($attributes['height']) ? intval($attributes['height']) : SiteConfig::current_site_config()->VimeoDefaultHeight;
 		if($width == 0) $width = VimeoService::getDefaultWidth();
 		if($height == 0) $width = VimeoService::getDefaultHeight();
 
-		return "<iframe src='http://player.vimeo.com/video/{$attributes['id']}' width='{$width}' height='{$height}' frameborder='0'></iframe>";
+		$playerURL = SiteConfig::current_site_config()->VimeoPlayerBase . $attributes['id'];
+
+		$params = array();
+
+		if(isset($attributes['autoplay']) && strtolower($attributes['autoplay']) === 'yes') {
+			$params[] = 'autoplay=1';
+		}
+		if(isset($attributes['color'])) {
+			$params[] = 'color=' . str_replace('#', '', trim($attributes['color']));
+		}
+		if(isset($attributes['title']) && strtolower($attributes['title']) === 'no') {
+			$params[] = 'title=0';
+		}
+		if(isset($attributes['portrait']) && strtolower($attributes['portrait']) === 'no') {
+			$params[] = 'portrait=0';
+		}
+		if(isset($attributes['byline']) && strtolower($attributes['byline']) === 'no') {
+			$params[] = 'byline=0';
+		}
+		if(isset($attributes['loop']) && strtolower($attributes['loop']) === 'yes') {
+			$params[] = 'loop=1';
+		}
+		if(isset($attributes['api']) && strtolower($attributes['api']) == 'yes') {
+			$params[] = 'api=1';
+			if(isset($attributes['player_id'])) {
+				$params[] = 'player_id=' . trim($attributes['player_id']);
+			}
+		}
+
+		$playerURL .= (!$params ? '' : '?' . implode('&', $params));
+
+		return "<iframe src='{$playerURL}' width='{$width}' height='{$height}' frameborder='0' id='vimeo-video-{$attributes['id']}'></iframe>";
 	}
 
 	public function onBeforeWrite() {
@@ -174,7 +205,7 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 
 		if(is_numeric($video_id)) {
 			$config = SiteConfig::current_site_config();
-			$vimeo = new VimeoService($config->VimeoAPIKey, $config->VimeoSecretKey);
+			$vimeo = new VimeoService();
 			$video = $vimeo->getVideoById($video_id);
 			return $video;
 		} else {

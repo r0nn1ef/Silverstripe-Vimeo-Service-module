@@ -58,17 +58,30 @@ class VimeoService Extends RestfulService {
 	protected $page_count;
 
 	/**
+	 * @var SiteConfig
+	 * @access protected
+	 */
+	protected $site_config;
+
+	/**
+	 * @var VimeoService;
+	 * @access protected;
+	 */
+	protected static $instance;
+
+	/**
 	 * Constructor
 	 * @param Set the cache expiry interva. Defaults to 1 hour (3600 seconds)
 	 * @see RestfulService
 	 * @return void
 	 */
-	function __construct($apiKey, $apiSecretKey, $expiry=NULL) {
+	function __construct($expiry=NULL) {
 		parent::__construct(self::$api_base_url, $expiry);
-		$this->api_key = $apiKey;
-		$this->api_secret_key = $apiSecretKey;
 		$this->checkErrors = true;
+		$this->setAPIKey($this->site_config->VimeoAPIKey);
+		$this->setSecretKey($this->site_config->VimeoSecretKey);
 	}
+
 
 	function errorCatch($response){
 		$err_msg = $response;
@@ -91,30 +104,6 @@ class VimeoService Extends RestfulService {
 	 */
 	public function setSecretKey($value) {
 		$this->api_secret_key = trim($value);
-	}
-
-	public static function setDefaultWidth($value) {
-		$value = intval($value);
-		if($value == 0) {
-			$value = 400;
-		}
-		self::$player_width = $value;
-	}
-
-	public static function setDefaultHeight($value) {
-		$value = intval($value);
-		if($value == 0) {
-			$value = 225;
-		}
-		self::$player_height = $value;
-	}
-
-	public static function getDefaultHeight() {
-		return self::$player_height;
-	}
-
-	public static function getDefaultWidth() {
-		return self::$player_width;
 	}
 
 	/**
