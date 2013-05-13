@@ -83,6 +83,10 @@
 	margin:24px auto 10px auto;
 }
 
+.vimeogallery .video-stats ul {
+	margin: 0;
+}
+
 .vimeogallery .video-stats ul li {
 	display:inline;
 	margin-right: 8px;
@@ -91,7 +95,6 @@
 .vimeogallery .video-stats .vimeo-stat, .vimeogallery .video-owner a {
 	font-weight:bold;
 }
-
 
 .vimeogallery .video-stats, .vimeogallery .video-owner, .vimeogallery .video-description {
 	margin-top:8px;
