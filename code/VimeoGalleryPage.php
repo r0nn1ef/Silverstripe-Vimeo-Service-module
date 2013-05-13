@@ -11,14 +11,34 @@ class VimeoGalleryPage extends Page {
 		'Method' => 'Int',
 		'User' => 'Varchar(100)',
 		'VideosPerPage' => 'Int',
-		'SortField' => 'Varchar(100)'
+		'SortField' => 'Varchar(100)',
+		'VideoWidth' => 'Int',
+		'VideoHeight' => 'Int',
+		'VideoTitle' => 'Int',
+		'VideoByLine' => 'Int',
+		'VideoPortrait' => 'Int',
+		'VideoColor' => 'Varchar(36)',
+		'VideoAutoPlay' => 'Int',
+		'VideoLoop' => 'Int',
+		'VideoAPI' => 'Int',
+		'VideoPlayerID' => 'Varchar(128)'
 	);
 
 	public static $defaults = array(
 		'Method' => 1,
 		'ShowVideoInPopup' => true,
 		'VideosPerPage' => 10,
-		'SortField' => 'UploadDate'
+		'SortField' => 'UploadDate',
+		'VideoWidth' => 640,
+		'VideoHeight' => 360,
+		'VideoTitle' => 1,
+		'VideoByLine' => 1,
+		'VideoPortrait' => 1,
+		'VideoColor' => '',
+		'VideoAutoPlay' => 0,
+		'VideoLoop' => 0,
+		'VideoAPI' => 1,
+		'VideoPlayerID' => ''
 	);
 
 	public static $allowed_children = array();
@@ -51,7 +71,16 @@ class VimeoGalleryPage extends Page {
 								'most_played' => _t('VimeoGalleryPage.MOST_PLAYED', 'Most played'),
 								'most_commented' => _t('VimeoGalleryPage.MOST_COMMENTED', 'Most commented'),
 								'most_liked' => _t('VimeoGalleryPage.MOST_LIKED', 'Most liked')
-							))
+							)),
+							new TextField("VideoWidth", "Video Width"),
+							new TextField("VideoHeight", "Video Height"),
+							new CheckboxField("VideoTitle", "Display video title on the videos."),
+							new CheckboxField("VideoByLine", "Show the user's byline on the videos."),
+							new CheckboxField("VideoPortrait", "Show the user's portrait on the videos."),
+							new CheckboxField("VideoAutoPlay", "Auto play videos when viewed."),
+							new TextField("VideoColor", "Specify the color of the video controls. Make sure that you don't include the #."),
+							new CheckboxField("VideoAPI", "Enable Javascript API."),
+							new TextField("VideoPlayerID", "Video player ID (required when using the Javascript API.)")
 						)
 					)->setHeadingLevel(4);
 
@@ -103,6 +132,11 @@ class VimeoGalleryPage extends Page {
 		return "<iframe src='http://player.vimeo.com/video/{$attributes['id']}' width='{$width}' height='{$height}' frameborder='0'></iframe>";
 	}
 
+	public function onBeforeWrite() {
+		$this->VideoColor = str_replace('#', '', $this->VideoColor);
+		parent::onBeforeWrite();
+	}
+
 }
 
 class VimeoGalleryPage_Controller extends Page_Controller {
@@ -112,9 +146,9 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 				'view'
 			);
 
-	// Since we are pulling the video data from a remote service, we'll want to store the video title
-	// for use in the breadcrumbs later.
-	protected $_videoTitle;
+	// Since we are pulling the video data from a remote service, we'll want to store the video
+	// for use later.
+	protected $_video;
 
 	function init() {
 		if(Director::fileExists(project() . "/css/VimeoGallery.css")) {
@@ -136,31 +170,75 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 		return $this->Method == 2 ? true : false;
 	}
 
-	function getVideo() {
-		$params = $this->getURLParams();
-		if(is_numeric($params['ID'])) {
+	function getVideo($video_id) {
+
+		if(is_numeric($video_id)) {
 			$config = SiteConfig::current_site_config();
 			$vimeo = new VimeoService($config->VimeoAPIKey, $config->VimeoSecretKey);
-			$video = $vimeo->getVideoById($params['ID']);
+			$video = $vimeo->getVideoById($video_id);
 			return $video;
 		} else {
 			return false;
 		}
 	}
 
-	function view() {
+	protected function buildVideoURL() {
+		if(!$this->_video) return FALSE;
 
-		if($video = $this->getVideo()) {
-			$this->_videoTitle = $video->Title->getValue();
-			$data = array('Video' => $video);
+		$url = 'http://player.vimeo.com/video/' . $this->_video->ID;
+		$params = array();
+
+		if($this->VideoAutoPlay) {
+			$params[] = 'autoplay=1';
+		}
+		if($this->VideoColor) {
+			$params[] = 'color=' . trim($this->VideoColor);
+		}
+		if(!$this->VideoTitle) {
+			$params[] = 'title=0';
+		}
+		if(!$this->VideoPortrait) {
+			$params[] = 'portrait=0';
+		}
+		if(!$this->VideoByLine) {
+			$params[] = 'byline=0';
+		}
+		if($this->VideoLoop) {
+			$params[] = 'loop=1';
+		}
+		if($this->VideoAPI) {
+			$params[] = 'api=1';
+		}
+		if($this->VideoPlayerID) {
+			$params[] = 'player_id=' . $this->VideoPlayerID;
+		}
+
+		return $url . (!$params ? '' : '?' . implode('&', $params));
+	}
+
+	function view() {
+		$params = $this->getURLParams();
+		$video_id = !$params['ID'] ? '' : $params['ID'];
+
+		if($this->_video = $this->getVideo($video_id)) {
+			$data = array('Video' => $this->_video, 'VideoURL' => $this->buildVideoURL());
 			return $this->Customise($data);
 		} else {
 			return $this->httpError(404, _t('VimeoGalleryPage.VIDEO_NOT_FOUND', 'Sorry that video could not be found.'));
 		}
+
 	}
 
 	///////////////////////// Page control functions ////////////////////////////
 
+	function Title() {
+		$title = $this->Title;
+
+		if($this->_video) {
+			$title = $this->_video->Title->getValue() . ' » ' . $title;
+		}
+		return $title;
+	}
 
 	function Breadcrumbs() {
 
