@@ -26,7 +26,7 @@ Installation Instructions
 4. Place this directory in the root of your SilverStripe installation
 5. Run /dev/build/
 6. The CMS should now have a new "VimeoGallery" page type.
-   Create a page and set the parameters correctly on 'Videos' tab to grab the videos for display.
+   Create a page and set the parameters correctly in the 'Videos' toggle section to retrieve the videos for display.
 7. Add these and visit your public site to reflect the changes
 
 
@@ -37,3 +37,4 @@ into any text field.
 
 Known issues:
 -----------------------------------------------
+Currently, pagination is not functional.
