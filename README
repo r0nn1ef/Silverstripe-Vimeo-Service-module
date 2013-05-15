@@ -2,7 +2,7 @@
 Vimeo Service Module
 ###############################################
 
-18 June 2011
+13 May 2013
 
 Maintainer Contact
 -----------------------------------------------
@@ -24,19 +24,10 @@ Installation Instructions
 2. Log in to your Vimeo user account
 3. Register your web application at http://www.vimeo.com/api/applications/new (Ensure that you uncheck the checkbox for "Upload Permissions" as you will not need upload access for this module.)
 4. Place this directory in the root of your SilverStripe installation
-
-
-5. add the following to your mysite/_config.php:
-
-VimeoService::setAPIKey('vimeo_api_key'); // << Your Vimeo "Consumer key"
-VimeoService::setSecretKey('vimeo_secret_key'); // << You Vimeo "Consumer secret"
-
-6. Run /dev/build/
-
-7. The CMS should now have a new "VimeoGallery" page type.
+5. Run /dev/build/
+6. The CMS should now have a new "VimeoGallery" page type.
    Create a page and set the parameters correctly on 'Videos' tab to grab the videos for display.
-
-8. Add these and visit your public site to reflect the changes
+7. Add these and visit your public site to reflect the changes
 
 
 Usage Overview
