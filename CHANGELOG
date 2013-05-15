@@ -4,3 +4,7 @@
 - final Silverstripe 2.4 release
 2.0
 - Initial Silverstripe 3.0
+-- updated to Silverstripe 3 framework
+-- removed Vimeo API & secret key from _config.php and moved to database config
+-- removed Pretty Window
+-- updated shortcode to handle all Vimeo parameters
