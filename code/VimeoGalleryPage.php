@@ -47,6 +47,8 @@ class VimeoGalleryPage extends Page {
 
 	protected $_cachedVideos = null;
 
+	protected $_pager;
+
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 
@@ -91,7 +93,7 @@ class VimeoGalleryPage extends Page {
 
 	function VimeoVideos() {
 
-		if($this->_cachedVideos) return $this->_cachedVideos;
+		//if($this->_cachedVideos) return $this->_cachedVideos;
 
 		$config = SiteConfig::current_site_config();
 
@@ -111,10 +113,14 @@ class VimeoGalleryPage extends Page {
 			default:
 				return false;
 		}
-
-		$this->_cachedVideos = $videos;
+		$this->_pager = $vimeo->getPager();
+		//$this->_cachedVideos = $videos;
 
 		return $videos;
+	}
+
+	public function getPager() {
+		return (!$this->_pager ? FALSE : $this->_pager);
 	}
 
 	function flushCache() {
@@ -286,5 +292,9 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 		}
 
 		return $Breadcrumbs;
+	}
+
+	function PaginatedPages() {
+		return $this->Pager;
 	}
 }
