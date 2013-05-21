@@ -9,6 +9,13 @@
 	background:transparent url(../images/vimeo-powered-by.png) top left no-repeat;
 	text-decoration:none !important;
 }
+.vimeogallery .clearfix:after {
+	height: 0;
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
 .vimeogallery ul.vimeo-video-list {
 	margin: 0;
 }
@@ -39,43 +46,37 @@
 	width:850px;
 }
 
-.vimeogallery ul.vimeo-video-list li.vimeo-video-container .clearfix:after {
-	height: 0;
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-}
-
 .vimeogallery ul.vimeo-video-list li.vimeo-video-container .vimeo-video-details p {
 	margin:5px auto;
 }
+
 
 .vimeogallery .pageNumbers {
 	float:left;
 	clear:left;
 	margin:0 25%;
+	padding-bottom: 8px;
 }
 
 .vimeogallery .pageNumbers a, .vimeogallery .pageNumbers strong {
 	float:left;
 	display:block;
 	width:auto;
-	padding:1px 3px;
-	background-color:#3e91c4;
-	border:1px solid #3e91c4;
-	color:#ffffff;
-	margin:3px;
+	margin:0 3px;
 }
 
-.vimeogallery .pageNumbers a:link, .vimeogallery .pageNumbers a:visited, .vimeogallery .pageNumbers a:hover {
-	text-decoration:none;
+.vimeogallery .pageNumbers a {
+	border-bottom-color: #ffffff;
+	outline: medium none;
 }
 
-.vimeogallery .pageNumbers a:hover, .vimeogallery .pageNumbers strong {
-	border-color:#3e91c4;
-	background-color:#ffffff;
-	color:#3e91c4;
+.vimeogallery .pageNumbers a:link, .vimeogallery .pageNumbers a:visited {
+	border-bottom-color: #ffffff !important;
+}
+
+.vimeogallery .pageNumbers a:hover {
+	color: #d80000 !important;
+	border-bottom-color: #b80000 !important;
 }
 
 /* Detail page stuff. */
