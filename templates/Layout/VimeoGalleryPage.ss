@@ -36,24 +36,25 @@
 			</li>
 		<% end_if %>
 	</ul>
-	<% if VimeoVideos.MoreThanOnePage %>
-		<p class="pageNumbers">
-		<% if VimeoVideos.PrevLink %>
-		<a href="$VimeoVideos.PrevLink">&laquo; Prev</a>
+	<% if $PaginatedPages.MoreThanOnePage %>
+		<div class="pageNumbers">
+		<% if $PaginatedPages.NotFirstPage %>
+		<a href="$PaginatedPages.PrevLink">&laquo; Prev</a>
 		<% end_if %>
 
-		<% control VimeoVideos.Pages %>
-		<% if CurrentBool %>
+		<% loop $PaginatedPages.Pages %>
+		<% if $CurrentBool %>
 		<strong>$PageNum</strong>
 		<% else %>
 		<a href="$Link" title="Go to page $PageNum">$PageNum</a>
 		<% end_if %>
-		<% end_control %>
+		<% end_loop %>
 
-		<% if VimeoVideos.NextLink %>
-		<a href="$VimeoVideos.NextLink">Next &raquo;</a>
+		<% if $PaginatedPages.NotLastPage %>
+		<a href="$PaginatedPages.NextLink">Next &raquo;</a>
 		<% end_if %>
-		</p>
+		</div>
+		<div class="clearfix"></div>
 	<% end_if %>
 	<a href="http://www.vimeo.com" target="_blank" id="vimeo-powered-by" title="Powered by Vimeo&trade;" rel="no-follow">&nbsp;</a>
 <div class="clearfix"></div>
