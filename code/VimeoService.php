@@ -58,6 +58,12 @@ class VimeoService Extends RestfulService {
 	protected $page_count;
 
 	/**
+	 * @var integer
+	 * @access protected
+	 */
+	protected $pager;
+
+	/**
 	 * Constructor
 	 * @param Set the cache expiry interva. Defaults to 1 hour (3600 seconds)
 	 * @see RestfulService
@@ -68,6 +74,7 @@ class VimeoService Extends RestfulService {
 		$this->checkErrors = true;
 		$this->setAPIKey(SiteConfig::current_site_config()->VimeoAPIKey);
 		$this->setSecretKey(SiteConfig::current_site_config()->VimeoSecretKey);
+		$this->pager = FALSE;
 	}
 
 
@@ -155,6 +162,7 @@ class VimeoService Extends RestfulService {
 
 		$videos = unserialize($response->getBody());
 
+
 		if(isset($videos->videos)) {
 			$results = new ArrayList();
 			foreach($videos->videos->video as $video) {
@@ -164,8 +172,8 @@ class VimeoService Extends RestfulService {
 				$results->push(new ArrayData($this->_extractVideoInfo($video)));
 			}
 
-			// since we manually created the dataobjectset, we need to set the pager info manually, too.
-			// $results->setPageLimits($call_params['start'], $page_limit, intval($videos->videos->total));
+			// since we manually created the dataobjectset, we need to set the pager manually, too.
+			$this->setPager($results, $page_limit, $page, intval($videos->videos->total));
 		} else {
 			$results = false;
 		}
@@ -235,6 +243,24 @@ class VimeoService Extends RestfulService {
 		}
 
 		return $results;
+	}
+
+	/**
+	 * @param ArrayList $items
+	 * @param int $per_page
+	 * @param int $current_page
+	 * @param int $total_items
+	 */
+	protected function setPager(ArrayList $items, $per_page, $current_page, $total_items) {
+		$this->pager = new PaginatedList($items, Controller::curr()->getRequest());
+		$this->pager->setPageLength($per_page);
+		$this->pager->setCurrentPage($current_page);
+		$this->pager->setTotalItems($total_items);
+		$this->pager->setLimitItems(TRUE);
+	}
+
+	public function getPager() {
+		return $this->pager;
 	}
 
 	/**
