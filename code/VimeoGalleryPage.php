@@ -93,7 +93,7 @@ class VimeoGalleryPage extends Page {
 
 	function VimeoVideos() {
 
-		//if($this->_cachedVideos) return $this->_cachedVideos;
+		if($this->_cachedVideos) return $this->_cachedVideos;
 
 		$config = SiteConfig::current_site_config();
 
@@ -114,7 +114,7 @@ class VimeoGalleryPage extends Page {
 				return false;
 		}
 		$this->_pager = $vimeo->getPager();
-		//$this->_cachedVideos = $videos;
+		$this->_cachedVideos = $videos;
 
 		return $videos;
 	}
