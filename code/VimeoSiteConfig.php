@@ -26,6 +26,6 @@ class VimeoSiteConfig extends DataExtension {
 	public function onBeforeWrite() {
 		$this->owner->VimeoDefaultWidth = (int)$this->owner->VimeoDefaultWidth == 0 ? 640 : $this->owner->VimeoDefaultWidth;
 		$this->owner->VimeoDefaultHeight = (int)$this->owner->VimeoDefaultHeight == 0 ? 360 : $this->owner->VimeoDefaultHeight;
-		$this->owner->VimeoPlayerBase .= (substr($this->owner->VimeoPlayerBase, strlen($this->owner->VimeoPlayerBase), 1) != '/' ? '/' : '');
+		$this->owner->VimeoPlayerBase .= (substr($this->owner->VimeoPlayerBase, (strlen($this->owner->VimeoPlayerBase)-1), 1) != '/' ? '/' : '');
 	}
 }
