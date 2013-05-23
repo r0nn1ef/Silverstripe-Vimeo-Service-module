@@ -277,19 +277,22 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 		return $title;
 	}
 
-	function Breadcrumbs() {
+	function Breadcrumbs($separator = ' &raquo; ') {
 
 		//Get the default breadcrumbs
-        $Breadcrumbs = parent::Breadcrumbs();
-
+        $Breadcrumbs = parent::getBreadcrumbs($separator);
+		$Parts = explode($separator, $Breadcrumbs);
+		// var_dump($this->_video);exit;
 		// If we are viewing a single video, add link back to the index action of this controller
 		// and add the video title to the breadcrumbs.
 		$params = $this->getURLParams();
 		if($params['Action'] == 'view') {
-			// $lastIdx = count($Parts)-1;
-			// $Parts[$lastIdx] = '<a href="' . $this->Link() . '">' . $Parts[$lastIdx] . '</a>';
-			// $Parts[] = !$this->_videoTitle ? _t('VimeoGalleryPage.UNTITLED_VIDEO', 'Untitled Video') : $this->_videoTitle;
+			$lastIdx = count($Parts)-1;
+			$Parts[$lastIdx] = '<a href="' . $this->Link() . '">' . $Parts[$lastIdx] . '</a>';
+			$Parts[] = !$this->_video->Title ? _t('VimeoGalleryPage.UNTITLED_VIDEO', 'Untitled Video') : $this->_video->Title->getValue();
 		}
+
+		$Breadcrumbs = implode($separator, $Parts);
 
 		return $Breadcrumbs;
 	}
