@@ -1,4 +1,6 @@
 <?php
+	// TODO: Move all possible values to _config/settings.yml
+
 	// Decorate SiteConfig to hold Vimeo API keys.
 	Object::add_extension('SiteConfig', 'VimeoSiteConfig');
 	// Decorate StringField so text-based data types have the method URLEncode
