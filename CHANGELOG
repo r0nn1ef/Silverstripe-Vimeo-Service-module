@@ -6,5 +6,5 @@
 - Initial Silverstripe 3.0
 -- updated to Silverstripe 3 framework
 -- removed Vimeo API & secret key from _config.php and moved to database config
--- removed Pretty Window
+-- removed prettyPhoto
 -- updated shortcode to handle all Vimeo parameters
