@@ -163,22 +163,33 @@ class VimeoService Extends RestfulService {
 		$videos = unserialize($response->getBody());
 
 
+
+
 		if(isset($videos->videos)) {
 			$results = new ArrayList();
 			foreach($videos->videos->video as $video) {
-				/*
-				 * @todo Add sorting
-				 */
 				$results->push(new ArrayData($this->_extractVideoInfo($video)));
 			}
+
+			$data = array(
+				'videos' => $results,
+				'limit' => $page_limit,
+				'current_page' => $page,
+				'total' => intval($videos->videos->total)
+			);
 
 			// since we manually created the dataobjectset, we need to set the pager manually, too.
 			$this->setPager($results, $page_limit, $page, intval($videos->videos->total));
 		} else {
-			$results = false;
+			$data = array(
+				'videos' => FALSE,
+				'limit' => $page_limit,
+				'current_page' => $page,
+				'total' => 0
+			);
 		}
 
-		return $results;
+		return $data;
 	}
 
 	/**

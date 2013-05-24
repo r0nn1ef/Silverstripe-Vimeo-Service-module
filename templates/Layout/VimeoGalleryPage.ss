@@ -4,8 +4,8 @@
 	<div class="content">$Content</div>
 </article>
 	<ul class="vimeo-video-list">
-		<% if VimeoVideos %>
-			<% loop VimeoVideos %>
+		<% if Videos %>
+			<% loop Videos %>
 				<li class="vimeo-video-container">
 					<div class="vimeo-video-thumb">
 						<a href="{$Top.Link}view/{$ID}"><img src="{$ThumbSmall}" width="100" alt="{$Title}" /></a>

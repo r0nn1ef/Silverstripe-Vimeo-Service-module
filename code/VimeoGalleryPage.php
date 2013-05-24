@@ -45,9 +45,13 @@ class VimeoGalleryPage extends Page {
 
 	public static $icon = 'vimeoservice/images/vimeo-file.gif';
 
-	protected $_cachedVideos = null;
+	protected $_videos = NULL;
 
-	protected $_pager;
+	protected $_current_page = NULL;
+
+	protected $_total_videos = NULL;
+
+	protected $_cachedVideos = NULL;
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -91,36 +95,52 @@ class VimeoGalleryPage extends Page {
 		return $fields;
 	}
 
-	function VimeoVideos() {
+	function VimeoVideos($start = 0) {
 
-		if($this->_cachedVideos) return $this->_cachedVideos;
+		// if($this->_cachedVideos) return $this->_cachedVideos;
 
 		$config = SiteConfig::current_site_config();
 
 		$vimeo = new VimeoService();
-		$start = isset($_GET['start']) ? (int)$_GET['start'] : 0;
+		// $start = isset($_GET['start']) ? (int)$_GET['start'] : 0;
 		$per_page = intval($this->VideosPerPage) < 10 ? 10 : intval($this->VideosPerPage);
+		// Used in the pager
+		$this->_current_page = $start == 0 ? 1 : (floor($start / $per_page) + 1);
+
 		switch($this->Method) {
 			case 1:
-				$videos = $vimeo->getVideosByUser($this->User, $start, $per_page, $this->SortField);
+				$result = $vimeo->getVideosByUser($this->User, $start, $per_page, $this->SortField);
 				break;
 			case 2:
-				$videos = $vimeo->getVideosByGroup($this->User, $start, $per_page, $this->SortField);
+				$result = $vimeo->getVideosByGroup($this->User, $start, $per_page, $this->SortField);
 				break;
 			case 3:
-				$videos = $vimeo->getVideosByAlbum($this->User, $start, $per_page, $this->SortField);
+				$result = $vimeo->getVideosByAlbum($this->User, $start, $per_page, $this->SortField);
 				break;
 			default:
-				return false;
+				$result = FALSE;
 		}
-		$this->_pager = $vimeo->getPager();
-		$this->_cachedVideos = $videos;
 
-		return $videos;
+		if($result) {
+			$this->_videos = $result['videos'];
+			$this->_total_videos = $result['total'];
+		}
+		// $this->_pager = $vimeo->getPager();
+		// $this->_cachedVideos = $videos;
+
+		return $this->_videos;
 	}
 
-	public function getPager() {
-		return (!$this->_pager ? FALSE : $this->_pager);
+	public function getVideos() {
+		return (!$this->_videos ? FALSE : $this->_videos);
+	}
+
+	public function getTotalVideos() {
+		return (!$this->_total_videos ? 0 : $this->_total_videos);
+	}
+
+	public function getCurrentPage() {
+		return (!$this->_current_page ? 1 : $this->_current_page);
 	}
 
 	function flushCache() {
@@ -253,6 +273,11 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 		return $url . (!$params ? '' : '?' . implode('&', $params));
 	}
 
+	public function index() {
+		$start = isset($_GET['start']) ? (int)$_GET['start'] : 0;
+		return $this->Customise(array('Videos' => $this->VimeoVideos($start)));
+	}
+
 	function view() {
 		$params = $this->getURLParams();
 		$video_id = !$params['ID'] ? '' : $params['ID'];
@@ -282,7 +307,6 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 		//Get the default breadcrumbs
         $Breadcrumbs = parent::getBreadcrumbs($separator);
 		$Parts = explode($separator, $Breadcrumbs);
-		// var_dump($this->_video);exit;
 		// If we are viewing a single video, add link back to the index action of this controller
 		// and add the video title to the breadcrumbs.
 		$params = $this->getURLParams();
@@ -298,6 +322,11 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 	}
 
 	function PaginatedPages() {
-		return $this->Pager;
+		$pager = new PaginatedList($this->Videos, $this->request);
+		$pager->setPageLength($this->VideosPerPage);
+		$pager->setCurrentPage($this->CurrentPage);
+		$pager->setTotalItems($this->TotalVideos);
+		$pager->setLimitItems(TRUE);
+		return $pager;
 	}
 }
