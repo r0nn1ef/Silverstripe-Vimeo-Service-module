@@ -1,6 +1,5 @@
 <?php
 
-
 class VimeoGalleryPage extends Page {
 
 	public static $singular_name = 'Vimeo Gallery Page';
@@ -26,7 +25,7 @@ class VimeoGalleryPage extends Page {
 
 	public static $defaults = array(
 		'Method' => 1,
-		'ShowVideoInPopup' => true,
+		'ShowVideoInPopup' => TRUE,
 		'VideosPerPage' => 10,
 		'SortField' => 'UploadDate',
 		'VideoWidth' => 640,
@@ -96,13 +95,12 @@ class VimeoGalleryPage extends Page {
 	}
 
 	function VimeoVideos($start = 0) {
-
+		// TODO: Add TRUE SS cache for Vimeo API calls
 		// if($this->_cachedVideos) return $this->_cachedVideos;
 
 		$config = SiteConfig::current_site_config();
 
 		$vimeo = new VimeoService();
-		// $start = isset($_GET['start']) ? (int)$_GET['start'] : 0;
 		$per_page = intval($this->VideosPerPage) < 10 ? 10 : intval($this->VideosPerPage);
 		// Used in the pager
 		$this->_current_page = $start == 0 ? 1 : (floor($start / $per_page) + 1);
@@ -125,8 +123,6 @@ class VimeoGalleryPage extends Page {
 			$this->_videos = $result['videos'];
 			$this->_total_videos = $result['total'];
 		}
-		// $this->_pager = $vimeo->getPager();
-		// $this->_cachedVideos = $videos;
 
 		return $this->_videos;
 	}
@@ -148,7 +144,7 @@ class VimeoGalleryPage extends Page {
 		unset($this->_cachedVideos);
 	}
 
-	public static function VimeoShortcodeHandler($attributes, $content=null, $parser=null) {
+	public static function VimeoShortcodeHandler($attributes, $content=NULL, $parser=NULL) {
 		if(!isset($attributes['id'])) return '';
 		$width = isset($attributes['width']) ? intval($attributes['width']) : SiteConfig::current_site_config()->VimeoDefaultWidth;
 		$height = isset($attributes['height']) ? intval($attributes['height']) : SiteConfig::current_site_config()->VimeoDefaultHeight;
@@ -203,10 +199,6 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 				'view'
 			);
 
-	// Since we are pulling the video data from a remote service, we'll want to store the video
-	// for use later.
-	protected $_video;
-
 	function init() {
 		if(Director::fileExists(project() . "/css/VimeoGallery.css")) {
 			Requirements::css(project() . "/css/VimeoGallery.css");
@@ -220,11 +212,11 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 	}
 
 	function isUserRequest() {
-		return $this->Method == 1 ? true : false;
+		return $this->Method == 1 ? TRUE : FALSE;
 	}
 
 	function isGroupRequest() {
-		return $this->Method == 2 ? true : false;
+		return $this->Method == 2 ? TRUE : FALSE;
 	}
 
 	function getVideo($video_id) {
@@ -235,7 +227,7 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 			$video = $vimeo->getVideoById($video_id);
 			return $video;
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 
