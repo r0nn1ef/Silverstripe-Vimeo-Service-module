@@ -313,6 +313,20 @@ class VimeoGalleryPage_Controller extends Page_Controller {
 		return $Breadcrumbs;
 	}
 
+	/**
+	 * Custom page control that will override SiteTree:Level($level).
+	 *
+	 * If we are in the view action and an ID is present, we need to
+	 * return TRUE because it's like a child page.
+	 *
+	 * @param int $level
+	 */
+	function Level($level) {
+		$params = $this->getURLParams();
+
+		return isset($params['ID']) ? 1 : null;
+	}
+
 	function PaginatedPages() {
 		$pager = new PaginatedList($this->Videos, $this->request);
 		$pager->setPageLength($this->VideosPerPage);
