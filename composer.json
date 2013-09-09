@@ -1,0 +1,27 @@
+{
+  "name": "r0nn1ef/vimeo-service-module",
+  "type": "silverstripe-module",
+  "keywords": ["silverstripe", "vimeo", "third-party", "api"],
+  "description": "The Vimeo module is designed to let you display a gallery of videos from the Vimeo video sharing site. The module also adds a shortcode to embed a Vimeo video into any text field.",
+  "license": "BSD-3-Clause",
+  "keywords": ["silverstripe"],
+  "authors": [
+  {
+      "name": "Ronald Ferguson",
+      "homepage": "http://www.ronferguson.net",
+      "email": "r0nn1ef8580@gmail.com"
+    }
+  ],
+  "require": {
+    "silverstripe/framework": "3.0.*",
+    "silverstripe/cms": "3.0.*"
+  },
+  "support": {
+      "issues": "https://github.com/r0nn1ef/Silverstripe-Vimeo-Service-module/issues"
+  },
+  "extra": {
+        "screenshots": [
+        "http://www.silverstripe.org/assets/Uploads/vimeo-service-module-screenshot.jpg"
+      ]
+  }
+}
